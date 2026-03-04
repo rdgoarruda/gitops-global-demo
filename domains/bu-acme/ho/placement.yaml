@@ -1,0 +1,16 @@
+# Placement para selecionar clusters do BU ACME em HO
+# Usado pelo ApplicationSet Matrix Generator para descobrir clusters destino
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: Placement
+metadata:
+  name: bu-acme-placement-ho
+  namespace: argocd
+spec:
+  clusterSets:
+    - global
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          matchLabels:
+            env: ho
+            bu: bu-acme

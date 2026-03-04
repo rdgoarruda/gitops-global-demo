@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - app-argocd-pull-integration.yaml
+  - app-ocm-config.yaml
+  - appset-governance.yaml
+  - appset-haproxy-ho.yaml
+  - appset-headlamp-ho.yaml

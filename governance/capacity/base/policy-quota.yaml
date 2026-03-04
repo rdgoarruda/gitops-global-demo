@@ -1,0 +1,32 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-capacity-default-quota
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-capacity-default-quota
+        spec:
+          remediationAction: enforce
+          severity: medium
+          namespaceSelector:
+            include: ["default", "*-workloads"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: ResourceQuota
+                metadata:
+                  name: workload-quota
+                spec:
+                  hard:
+                    requests.cpu: "2"
+                    requests.memory: 2Gi
+                    limits.cpu: "4"
+                    limits.memory: 4Gi
+                    pods: "20"

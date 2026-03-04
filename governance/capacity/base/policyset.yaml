@@ -1,0 +1,9 @@
+apiVersion: policy.open-cluster-management.io/v1beta1
+kind: PolicySet
+metadata:
+  name: policy-set-capacity
+spec:
+  description: "Controle de Quotas e Limites"
+  policies:
+    - policy-capacity-default-limits
+    - policy-capacity-default-quota

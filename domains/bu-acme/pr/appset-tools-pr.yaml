@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: appset-tools-bu-acme-pr
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: 'https://github.com/SEU_USUARIO/gitops-bu-acme-demo.git'
+              revision: main
+              directories:
+                - path: pr/tools/*
+          - clusterDecisionResource:
+              configMapRef: acm-placement
+              labelSelector:
+                matchLabels:
+                  cluster.open-cluster-management.io/placement: bu-acme-placement-pr
+              requeueAfterSeconds: 180
+  template:
+    metadata:
+      name: '{{path.basename}}-bu-acme-pr'
+      labels:
+        tool: '{{path.basename}}'
+        bu: bu-acme
+        environment: pr
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/SEU_USUARIO/gitops-bu-acme-demo.git'
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        name: '{{clusterName}}'
+        namespace: bu-acme-workloads
+      syncPolicy:
+        automated: {prune: true, selfHeal: true}
+        syncOptions: [CreateNamespace=true, ServerSideApply=true]

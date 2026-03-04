@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-bu-acme-pr
+  namespace: argocd
+  labels:
+    bu: bu-acme
+    environment: pr
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/SEU_USUARIO/gitops-global-demo.git'
+    targetRevision: main
+    path: domains/bu-acme/pr
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true, ServerSideApply=true]

@@ -1,0 +1,15 @@
+# Placement para selecionar clusters do BU ACME em PR
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: Placement
+metadata:
+  name: bu-acme-placement-pr
+  namespace: argocd
+spec:
+  clusterSets:
+    - global
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          matchLabels:
+            env: pr
+            bu: bu-acme

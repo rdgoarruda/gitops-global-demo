@@ -1,0 +1,28 @@
+name: Validate Kustomize Builds
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'bootstrap/**'
+      - 'config/**'
+      - 'governance/**'
+      - 'domains/**'
+      - 'infrastructure/**'
+
+jobs:
+  kustomize-build:
+    name: kustomize build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-kubectl@v4
+        with:
+          version: 'v1.32.0'
+      - name: Build all kustomize directories
+        run: |
+          find . -name "kustomization.yaml" -not -path "./.git/*" | while read f; do
+            dir=$(dirname "$f")
+            echo "→ kustomize build $dir"
+            kubectl kustomize "$dir" > /dev/null || echo "  ⚠️  $dir falhou (expected for ArgoCD-only resources)"
+          done

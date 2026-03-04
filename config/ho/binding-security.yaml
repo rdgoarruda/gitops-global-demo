@@ -1,0 +1,13 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-security-ho
+  namespace: ocm-policies-ho
+placementRef:
+  name: shared-placement-ho
+  kind: Placement
+  apiGroup: cluster.open-cluster-management.io
+subjects:
+  - name: policy-set-security
+    kind: PolicySet
+    apiGroup: policy.open-cluster-management.io

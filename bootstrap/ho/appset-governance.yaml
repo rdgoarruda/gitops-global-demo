@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: governance-ho
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"     # Executa após ocm-config-ho (wave -1)
+spec:
+  generators:
+    - git:
+        repoURL: 'https://github.com/SEU_USUARIO/gitops-global-demo.git'
+        revision: main
+        directories:
+          - path: governance/*
+  template:
+    metadata:
+      name: 'ocm-policy-{{path.basename}}-ho'
+      labels:
+        category: '{{path.basename}}'
+        environment: ho
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/SEU_USUARIO/gitops-global-demo.git'
+        targetRevision: main
+        path: '{{path}}/overlays/ho'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: ocm-policies-ho
+      syncPolicy:
+        automated: {prune: true, selfHeal: true}
+        syncOptions: [CreateNamespace=true, ServerSideApply=true]

@@ -1,0 +1,12 @@
+# ConfigMap usado pelo ArgoCD para duck-typing com PlacementDecisions do OCM
+# Permite que o ApplicationSet Controller resolva Placements do OCM
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: acm-placement
+  namespace: argocd
+data:
+  apiVersion: cluster.open-cluster-management.io/v1beta1
+  kind: placementdecisions
+  statusListKey: decisions
+  matchKey: clusterName

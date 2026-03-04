@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ocm-config-ho
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"       # Executa antes do ApplicationSet de políticas
+    argocd.argoproj.io/sync-options: "Prune=false"  # Nunca deleta esta Application automaticamente
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/SEU_USUARIO/gitops-global-demo.git'
+    targetRevision: main
+    path: config/ho
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ocm-policies-ho
+  syncPolicy:
+    automated:
+      prune: false      # Deleções de recursos OCM exigem confirmação manual
+      selfHeal: true
+    syncOptions: [CreateNamespace=true, ServerSideApply=true]

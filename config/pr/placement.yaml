@@ -1,0 +1,13 @@
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: Placement
+metadata:
+  name: shared-placement-pr
+  namespace: ocm-policies-pr
+spec:
+  clusterSets:
+    - global
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          matchLabels:
+            env: pr

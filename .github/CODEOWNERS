@@ -1,0 +1,8 @@
+# -------------------------------------------------------
+# CODEOWNERS — gitops-global-demo
+# Time de plataforma controla toda a governança central.
+# -------------------------------------------------------
+*                            @SEU_USUARIO
+governance/**                @SEU_USUARIO
+config/**                    @SEU_USUARIO
+bootstrap/**                 @SEU_USUARIO

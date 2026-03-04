@@ -1,0 +1,17 @@
+name: Lint YAML
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
+
+jobs:
+  yamllint:
+    name: yamllint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install yamllint
+      - run: yamllint -c .github/yamllint.yaml .
