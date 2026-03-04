@@ -1,4 +1,71 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
   - ../../base
+
+# ── 1. labels ─────────────────────────────────────────────────────────────
+# Adiciona labels em TODOS os recursos gerados por este overlay.
+# Útil para filtragem, seletores e organização no cluster.
+# includeSelectors: false → não adiciona nos seletores (evita conflito em Deployments)
+labels:
+  - pairs:
+      environment: ho
+      managed-by: argocd
+      team: platform
+    includeSelectors: false
+
+# ── 2. commonAnnotations ───────────────────────────────────────────────────
+# Adiciona anotações em todos os recursos — boa prática para rastreabilidade.
+commonAnnotations:
+  gitops.io/repo: "gitops-global-demo"
+  gitops.io/path: "governance/capacity/overlays/ho"
+  gitops.io/owner: "platform-team"
+
+# ── 3. patches (Strategic Merge Patch) ────────────────────────────────────
+# Faz merge inteligente com o recurso base.
+# Aqui: HO usa remediationAction=inform (observar, sem forçar)
+#       PR usaria enforce (ativo, forçar correção)
+patches:
+  - patch: |-
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: Policy
+      metadata:
+        name: policy-capacity-default-limits
+      spec:
+        remediationAction: inform
+    target:
+      kind: Policy
+      name: policy-capacity-default-limits
+
+  - patch: |-
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: Policy
+      metadata:
+        name: policy-capacity-default-quota
+      spec:
+        remediationAction: inform
+    target:
+      kind: Policy
+      name: policy-capacity-default-quota
+
+# ── 4. patches (JSON 6902) ─────────────────────────────────────────────────
+# Patch cirúrgico via operações JSON (add/remove/replace/copy/move/test).
+# Aqui: ajusta os limites de LimitRange para valores menores no HO
+#       (HO tem menos recursos que PR)
+  - target:
+      kind: Policy
+      name: policy-capacity-default-limits
+    patch: |-
+      - op: replace
+        path: /spec/policy-templates/0/objectDefinition/spec/object-templates/0/objectDefinition/spec/limits/0/default/cpu
+        value: "250m"
+      - op: replace
+        path: /spec/policy-templates/0/objectDefinition/spec/object-templates/0/objectDefinition/spec/limits/0/default/memory
+        value: "256Mi"
+      - op: replace
+        path: /spec/policy-templates/0/objectDefinition/spec/object-templates/0/objectDefinition/spec/limits/0/defaultRequest/cpu
+        value: "50m"
+      - op: replace
+        path: /spec/policy-templates/0/objectDefinition/spec/object-templates/0/objectDefinition/spec/limits/0/defaultRequest/memory
+        value: "64Mi"
