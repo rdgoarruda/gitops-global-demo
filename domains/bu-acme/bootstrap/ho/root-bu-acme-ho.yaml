@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/SEU_USUARIO/gitops-global-demo.git'
+    repoURL: 'https://github.com/rdgoarruda/gitops-global-demo.git'
     targetRevision: main
     path: domains/bu-acme/ho
   destination:

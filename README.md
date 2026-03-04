@@ -6,8 +6,8 @@ Faz parte de uma estratégia de [3 repositórios GitOps](docs/ADR-001-three-repo
 o responsável pela camada de plataforma e segurança — tudo que é mandatório independente de qual
 aplicação roda no cluster.
 
-> ⚠️ **Importante:** Substitua `SEU_USUARIO` em todos os arquivos YAML pelo seu usuário/organização GitHub.
-> Execute: `grep -r "SEU_USUARIO" . --include="*.yaml" -l`
+> ⚠️ **Importante:** Substitua `rdgoarruda` em todos os arquivos YAML pelo seu usuário/organização GitHub.
+> Execute: `grep -r "rdgoarruda" . --include="*.yaml" -l`
 
 ---
 

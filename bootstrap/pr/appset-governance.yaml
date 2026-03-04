@@ -8,7 +8,7 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: 'https://github.com/SEU_USUARIO/gitops-global-demo.git'
+        repoURL: 'https://github.com/rdgoarruda/gitops-global-demo.git'
         revision: main
         directories:
           - path: governance/*
@@ -21,7 +21,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: 'https://github.com/SEU_USUARIO/gitops-global-demo.git'
+        repoURL: 'https://github.com/rdgoarruda/gitops-global-demo.git'
         targetRevision: main
         path: '{{path}}/overlays/pr'
       destination:

@@ -10,7 +10,7 @@ spec:
     - matrix:
         generators:
           - git:
-              repoURL: 'https://github.com/SEU_USUARIO/gitops-bu-acme-demo.git'
+              repoURL: 'https://github.com/rdgoarruda/gitops-bu-acme-demo.git'
               revision: main
               directories:
                 - path: ho/tools/*
@@ -30,7 +30,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: 'https://github.com/SEU_USUARIO/gitops-bu-acme-demo.git'
+        repoURL: 'https://github.com/rdgoarruda/gitops-bu-acme-demo.git'
         targetRevision: main
         path: '{{path}}'
       destination:
